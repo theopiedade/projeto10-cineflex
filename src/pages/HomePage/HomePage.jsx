@@ -12,8 +12,8 @@ export default function HomePage() {
             const requisicao = axios.get("https://mock-api.driven.com.br/api/v8/cineflex/movies");
 
             requisicao.then(resposta => {
-                console.log(resposta.data.items);
-                setItems(resposta.data.items);
+                console.log(resposta.data);
+                setItems(resposta.data);
             });
  
     }, []);
