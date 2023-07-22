@@ -1,6 +1,9 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import { useState } from 'react';
+import axios from 'axios';
 
 export default function SessionsPage() {
+
 
     return (
         <PageContainer>
