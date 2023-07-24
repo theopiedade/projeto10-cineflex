@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { useState, useEffect } from 'react';
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import axios from 'axios';
 import Seats from "./Seats";
 
@@ -21,6 +21,36 @@ export default function SeatsPage() {
     const [items, setItems] = useState([]);
     const sessionId = useParams().idSessao;
     const [seatsSelected, setSeatsSelected] = useState([]);
+    const [seatsNumSelected, setSeatsNumSelected] = useState([]);
+    const [name, setName] = useState();
+    const [cpf, setCPF] = useState();
+    const navigate = useNavigate();
+
+    function sendSelect(event) {
+        event.preventDefault();
+
+        console.log("Entrou em sendSelect");
+        const URL = `https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many`;
+
+        const obj = {
+            ids: seatsSelected,
+            name: name,
+            cpf: cpf
+        }
+
+        const promisse = axios.post(URL, obj);
+
+        const sTitle = items.movie.title;
+        const sDay = items.day.weekday;
+        const sHour = items.name;
+        const sSeats = seatsNumSelected;
+        const sName = name;
+        const sCPF = cpf;
+
+        promisse.then(() => navigate("/sucesso", { 
+            state: { sTitle, sDay, sHour, sSeats, sName, sCPF}
+         }));
+      }
 
     useEffect(() => {
         const requisicao = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${sessionId}/seats`);
@@ -43,7 +73,8 @@ export default function SeatsPage() {
             {
             items.seats.map(item =>
                 <Seats key={item.id} id={item.id} name={item.name} isAvailable={item.isAvailable}
-                seatsSelected={seatsSelected} setSeatsSelected={setSeatsSelected}
+                seatsSelected={seatsSelected} setSeatsSelected={setSeatsSelected} 
+                seatsNumSelected={seatsNumSelected} setSeatsNumSelected={setSeatsNumSelected}
                 />
              )
             }
@@ -64,14 +95,16 @@ export default function SeatsPage() {
                 </CaptionItem>
             </CaptionContainer>
 
-            <FormContainer>
+            <FormContainer >
+                <form onSubmit={sendSelect}>
                 Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
+                <input onChange={e => setName(e.target.value)} type="text" placeholder="Digite seu nome..." />
 
                 CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
+                <input onChange={e => setCPF(e.target.value)} type="text" placeholder="Digite seu CPF..." />
 
                 <button>Reservar Assento(s)</button>
+                </form>
             </FormContainer>
 
             <FooterContainer>
@@ -117,10 +150,22 @@ const FormContainer = styled.div`
     margin: 20px 0;
     font-size: 18px;
     button {
+        margin-top: 20px;
         align-self: center;
+        border-radius: 3px;
+        background: #E8833A;
+        color: #FFF;
+        height: 42px;
+        width: 225px;
+        border-color: #E8833A;
     }
     input {
+        margin-bottom: 9px;
         width: calc(100vw - 60px);
+        border-radius: 3px;
+        border: 1px solid #D4D4D4;
+        background: #FFF;
+        height: 51px;
     }
 `
 const CaptionContainer = styled.div`

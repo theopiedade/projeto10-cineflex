@@ -13,25 +13,33 @@ const borderColors = [
     "#F7C52B"
 ];
 
-export default function Seats({id, name, isAvailable, seatsSelected, setSeatsSelected}) {
+export default function Seats({id, name, isAvailable, 
+    seatsSelected, setSeatsSelected, seatsNumSelected, setSeatsNumSelected}) {
 
  const [color, setColor] = useState();
 
  function seatSelect(sId, sName) {
     if (seatsSelected.indexOf(sId) === -1) {
         setSeatsSelected([...seatsSelected,sId]);
+        setSeatsNumSelected([...seatsNumSelected,sName]);
     }
     else {
+        let arrSeatsNumSelected = seatsNumSelected;
         let arrSeatsSelected = seatsSelected;
+
         let index = seatsSelected.indexOf(sId);
+        let index2 = seatsNumSelected.indexOf(sId);
+
         arrSeatsSelected.splice(index,1);
-        setSeatsSelected(arrSeatsSelected); 
+        arrSeatsNumSelected.splice(index2, 1);
+
+        setSeatsSelected(arrSeatsSelected);
+        setSeatsNumSelected(arrSeatsNumSelected);
     }
   
     if (color === 0) setColor(1);
     else setColor(0);
  }
- console.log(seatsSelected);
 
  useEffect(() => {
     if (isAvailable) setColor(1);
@@ -40,7 +48,7 @@ export default function Seats({id, name, isAvailable, seatsSelected, setSeatsSel
 }, []);
 
  return (
-    <SeatItem color={color} onClick={() => isAvailable ? seatSelect(id, name) : ""}>
+    <SeatItem color={color} onClick={() => isAvailable ? seatSelect(id, name) : alert("Esse assento não está disponível")}>
         {name}
     </SeatItem>
  );
