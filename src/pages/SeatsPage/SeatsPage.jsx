@@ -98,10 +98,10 @@ export default function SeatsPage() {
             <FormContainer >
                 <form onSubmit={sendSelect}>
                 Nome do Comprador:
-                <input data-test="client-name" onChange={e => setName(e.target.value)} type="text" />
+                <input type="text" data-test="client-name" onChange={e => setName(e.target.value)}  />
 
                 CPF do Comprador:
-                <input data-test="client-cpf" onChange={e => setCPF(e.target.value)} type="number" />
+                <input type="number" data-test="client-cpf" onChange={e => setCPF(e.target.value)}  />
 
                 <button data-test="book-seat-btn">Reservar Assento(s)</button>
                 </form>
