@@ -48,7 +48,7 @@ export default function Seats({id, name, isAvailable,
 }, []);
 
  return (
-    <SeatItem color={color} onClick={() => isAvailable ? seatSelect(id, name) : alert("Esse assento não está disponível")}>
+    <SeatItem data-test="seat" color={color} onClick={() => isAvailable ? seatSelect(id, name) : alert("Esse assento não está disponível")}>
         {name}
     </SeatItem>
  );
