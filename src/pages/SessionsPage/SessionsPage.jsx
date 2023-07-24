@@ -34,7 +34,7 @@ export default function SessionsPage() {
 
             <FooterContainer>
                 <div>
-                    <img src={items.posterURL} alt="poster" />
+                    <img data-test="footer" src={items.posterURL} alt="poster" />
                 </div>
                 <div>
                     <p>{items.title}</p>
@@ -48,6 +48,8 @@ export default function SessionsPage() {
 const PageContainer = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     font-family: 'Roboto';
     font-size: 24px;
     text-align: center;
@@ -66,6 +68,7 @@ const FooterContainer = styled.div`
     background-color: #C3CFD9;
     display: flex;
     flex-direction: row;
+    justify-content: center;
     align-items: center;
     font-size: 20px;
     position: fixed;

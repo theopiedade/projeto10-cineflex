@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom";
 
+
 export default function Sessions ({id, weekday, date, showtimes}) {
     return(
     <SessionContainer key={id} data-test="movie-day" >

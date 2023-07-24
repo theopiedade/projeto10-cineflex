@@ -1,30 +1,65 @@
 import styled from "styled-components"
+import { useState, useEffect } from 'react';
+import { Link, useParams } from "react-router-dom"
+import axios from 'axios';
+import Seats from "./Seats";
+
+const circleColors = [
+    "#1AAE9E",
+    "#C3CFD9",
+    "#FBE192"
+];
+
+const borderColors = [
+    "#0E7D71",
+    "#7B8B99",
+    "#F7C52B"
+];
 
 export default function SeatsPage() {
+
+    const [items, setItems] = useState([]);
+    const sessionId = useParams().idSessao;
+    const [seatsSelected, setSeatsSelected] = useState([]);
+
+    useEffect(() => {
+        const requisicao = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${sessionId}/seats`);
+
+        requisicao.then(resposta => {
+            setItems(resposta.data);
+        });
+
+        }, []);
+
+    if(items.length === 0 || items === null) {
+        return <h1>Loading...</h1>;
+    }
+
 
     return (
         <PageContainer>
             Selecione o(s) assento(s)
-
             <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
+            {
+            items.seats.map(item =>
+                <Seats key={item.id} id={item.id} name={item.name} isAvailable={item.isAvailable}
+                seatsSelected={seatsSelected} setSeatsSelected={setSeatsSelected}
+                />
+             )
+            }
             </SeatsContainer>
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle color="0" />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle color="1" />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle color="2" />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
@@ -41,11 +76,11 @@ export default function SeatsPage() {
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={items.movie.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
+                    <p>{items.movie.title}</p>
+                    <p>{items.day.weekday} - {items.name}</p>
                 </div>
             </FooterContainer>
 
@@ -96,8 +131,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border-color: ${props => borderColors[props.color]};         // Essa cor deve mudar
+    background-color: ${props => circleColors[props.color]};    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -132,6 +167,7 @@ const FooterContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     font-size: 20px;
     position: fixed;
     bottom: 0;
