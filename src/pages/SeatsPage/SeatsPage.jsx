@@ -41,14 +41,14 @@ export default function SeatsPage() {
         const promisse = axios.post(URL, obj);
 
         const sTitle = items.movie.title;
-        const sDay = items.day.weekday;
+        const sDate = items.day.date;
         const sHour = items.name;
         const sSeats = seatsNumSelected;
         const sName = name;
         const sCPF = cpf;
 
         promisse.then(() => navigate("/sucesso", { 
-            state: { sTitle, sDay, sHour, sSeats, sName, sCPF}
+            state: { sTitle, sDate, sHour, sSeats, sName, sCPF}
          }));
       }
 

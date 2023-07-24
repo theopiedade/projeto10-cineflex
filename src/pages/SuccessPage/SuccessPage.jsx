@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate, useLocation} from 'react-router-dom';
 
 export default function SuccessPage() {
 
-    const { sTitle, sDay, sHour, sSeats, sName, sCPF} = useLocation().state;
+    const { sTitle, sDate, sHour, sSeats, sName, sCPF} = useLocation().state;
 
     return (
         <PageContainer>
@@ -13,7 +13,7 @@ export default function SuccessPage() {
                 <div data-test="movie-info">
                 <strong><p>Filme e sessão</p></strong>
                 <p>{sTitle}</p>
-                <p>{sDay} - {sHour}</p>
+                <p>{sDate} {sHour}</p>
                 </div>
             </TextContainer>
 
